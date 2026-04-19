@@ -74,7 +74,7 @@ tabs:
       - module-15
   - name: VS Code
     url: https://vscode-${guid}.${domain}/
-    external: true
+    external: false
     modules:
       - module-01
       - module-02

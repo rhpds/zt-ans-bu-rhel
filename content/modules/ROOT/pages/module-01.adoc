@@ -17,6 +17,11 @@ image::exercise-1-1-setup/vscode-new-terminal.png[Opening a new terminal in VS C
 
 You will use this terminal to run all commands in the exercises that follow.
 
+[TIP]
+====
+If you have trouble copying and pasting into the VS Code terminal, you can open VS Code in a separate browser tab: https://vscode-{guid}.{domain}/[Open VS Code in external tab,window=_blank]
+====
+
 == Inventory Basics
 
 An inventory tells Ansible what hosts to target and how to group them. In this lab, your working directory `~/lab_inventory` contains the inventory used in prior exercises.
@@ -105,7 +110,7 @@ The basic structure looks as follows:
         create_home: true
 ----
 
-* About the `package` module: This modules manages packages on a target without specifying a package manager module
+* About the `package` module: This module manages packages on a target without specifying a package manager module
 
 * About the `user` module: This module is used to manage user accounts.
 

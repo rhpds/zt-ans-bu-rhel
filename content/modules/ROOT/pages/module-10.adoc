@@ -58,6 +58,14 @@ To configure and use this repository as a *Source Control Management (SCM)* syst
 
 === Create the Project
 
+[NOTE]
+====
+To access the automation controller web UI, click the *AAP* tab at the top of the Showroom interface. Log in with the following credentials:
+
+* *Username:* `admin`
+* *Password:* `ansible123!`
+====
+
 * Go to *Automation Execution → Projects* and click the *Create project* button. Fill in the form:
 
 [cols="1,1"]

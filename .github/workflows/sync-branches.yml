@@ -1,0 +1,90 @@
+name: Sync Workshop Branches
+
+on:
+  push:
+    branches:
+      - main
+      - 90min_main
+      - 'v*'
+      - '90min_v*'
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip-sync]')"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Determine source and target
+        id: vars
+        run: |
+          BRANCH="${{ github.ref_name }}"
+
+          if [[ "$BRANCH" == 90min_* ]]; then
+            SUFFIX="${BRANCH#90min_}"
+            echo "source=$BRANCH" >> "$GITHUB_OUTPUT"
+            echo "target=$SUFFIX" >> "$GITHUB_OUTPUT"
+          else
+            echo "source=$BRANCH" >> "$GITHUB_OUTPUT"
+            echo "target=90min_${BRANCH}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Sync to target branch
+        run: |
+          SOURCE="${{ steps.vars.outputs.source }}"
+          TARGET="${{ steps.vars.outputs.target }}"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+          # Determine the counterpart's main branch for protected files
+          if [[ "$TARGET" == 90min_* ]]; then
+            MAIN_BRANCH="90min_main"
+          else
+            MAIN_BRANCH="main"
+          fi
+
+          # If the target branch doesn't exist, create it from source
+          if ! git ls-remote --exit-code origin "refs/heads/$TARGET" > /dev/null 2>&1; then
+            echo "Target branch $TARGET does not exist — creating it from $SOURCE."
+            git checkout -b "$TARGET" "origin/$SOURCE"
+
+            # Swap in the protected files from the counterpart's main branch
+            git checkout "origin/$MAIN_BRANCH" -- ui-config.yml content/modules/ROOT/nav.adoc
+            git commit -m "Create $TARGET from $SOURCE with correct nav/config [skip-sync]"
+            git push origin "$TARGET"
+            exit 0
+          fi
+
+          git checkout "$TARGET"
+
+          # Attempt the merge without committing
+          if ! git merge "origin/$SOURCE" --no-commit --no-ff 2>/dev/null; then
+            # Check if conflicts exist outside the protected files
+            CONFLICT_FILES=$(git diff --name-only --diff-filter=U)
+            while IFS= read -r file; do
+              if [ -n "$file" ] \
+                && [ "$file" != "ui-config.yml" ] \
+                && [ "$file" != "content/modules/ROOT/nav.adoc" ]; then
+                echo "::error::Merge conflict in $file — manual intervention required."
+                git merge --abort
+                exit 1
+              fi
+            done <<< "$CONFLICT_FILES"
+          fi
+
+          # Restore the two branch-specific files to the target's version
+          git checkout HEAD -- ui-config.yml content/modules/ROOT/nav.adoc 2>/dev/null || true
+
+          # Only commit and push if there are actual changes
+          if git diff --cached --quiet; then
+            echo "Nothing to sync."
+          else
+            git commit -m "Sync from $SOURCE [skip-sync]"
+            git push origin "$TARGET"
+          fi

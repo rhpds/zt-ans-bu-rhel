@@ -47,6 +47,42 @@ This workshop is available in two formats:
 . System Roles
 . Wrap Up
 
+== Branch Strategy
+
+This repository uses paired branches to maintain both workshop formats from a single codebase.
+
+=== Branch Pairs
+
+[cols="1,1,1"]
+|===
+| Purpose | Full Workshop (4-hour) | 90-Minute Workshop
+
+| Dev
+| `main`
+| `90min_main`
+
+| Prod
+| `v0.0.1`, `v0.0.2`, etc.
+| `90min_v0.0.1`, `90min_v0.0.2`, etc.
+|===
+
+=== Automatic Sync
+
+A GitHub Action (`.github/workflows/sync-branches.yml`) keeps paired branches in sync. When you push to any branch, the workflow automatically merges your changes into its counterpart.
+
+Two files are *never* synced and remain independent per branch:
+
+* `ui-config.yml` — Showroom UI/tab configuration
+* `content/modules/ROOT/nav.adoc` — Module navigation
+
+Everything else (module content, config, automation playbooks, etc.) stays identical across both formats.
+
+=== Workflow
+
+* *Day-to-day development:* Push to `main` or `90min_main`. The sync action handles the rest.
+* *Creating a release:* Push a new version branch (e.g., `v0.0.2`). The action automatically creates `90min_v0.0.2` with the correct nav and UI config.
+* *Skipping sync:* Include `[skip-sync]` in your commit message.
+
 == Related Repositories
 
 * link:https://github.com/ansible-tmm/RHEL-workshop-examples[RHEL Workshop Examples] — Playbooks and roles used in the lab exercises
