@@ -1,8 +1,0 @@
-* xref:index.adoc[Workshop Overview]
-* xref:module-01.adoc[1. Writing Your First Playbook]
-* xref:module-02.adoc[2. Using Variables]
-* xref:module-10.adoc[3. Projects & Job Templates]
-* xref:module-11.adoc[4. Surveys]
-* xref:module-12.adoc[5. Role-based Access Control]
-* xref:module-14.adoc[6. System Roles]
-* xref:module-15.adoc[7. Wrap Up]
