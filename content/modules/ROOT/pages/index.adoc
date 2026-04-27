@@ -68,10 +68,6 @@ Early exercises (1.1–1.5) use `ansible-playbook` in the provided lab environme
 * xref:module-14.adoc[Exercise 2.7 - System Roles]
 * xref:module-15.adoc[Exercise 2.8 - Wrap up]
 
-== Supplemental Exercises
-
-* xref:supplemental-image-mode.adoc[Bonus - RHEL Image Mode]
-
 '''
 
 image::rh-ansible-automation-platform.png[Red Hat Ansible Automation Platform,400]
