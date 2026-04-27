@@ -55,7 +55,7 @@ jobs:
             git checkout -b "$TARGET" "origin/$SOURCE"
 
             # Swap in the protected files from the counterpart's main branch
-            git checkout "origin/$MAIN_BRANCH" -- ui-config.yml content/modules/ROOT/nav.adoc
+            git checkout "origin/$MAIN_BRANCH" -- ui-config.yml content/modules/ROOT/nav.adoc content/modules/ROOT/pages/index.adoc
             git commit -m "Create $TARGET from $SOURCE with correct nav/config [skip-sync]"
             git push origin "$TARGET"
             exit 0
@@ -70,7 +70,8 @@ jobs:
             while IFS= read -r file; do
               if [ -n "$file" ] \
                 && [ "$file" != "ui-config.yml" ] \
-                && [ "$file" != "content/modules/ROOT/nav.adoc" ]; then
+                && [ "$file" != "content/modules/ROOT/nav.adoc" ] \
+                && [ "$file" != "content/modules/ROOT/pages/index.adoc" ]; then
                 echo "::error::Merge conflict in $file — manual intervention required."
                 git merge --abort
                 exit 1
@@ -79,7 +80,7 @@ jobs:
           fi
 
           # Restore the two branch-specific files to the target's version
-          git checkout HEAD -- ui-config.yml content/modules/ROOT/nav.adoc 2>/dev/null || true
+          git checkout HEAD -- ui-config.yml content/modules/ROOT/nav.adoc content/modules/ROOT/pages/index.adoc 2>/dev/null || true
 
           # Only commit and push if there are actual changes
           if git diff --cached --quiet; then
