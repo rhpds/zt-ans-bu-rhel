@@ -2,7 +2,7 @@
 
 *This is documentation for Ansible Automation Platform 2.6*
 
-This condensed workshop provides a quick introduction to Ansible Automation, starting with command-line fundamentals and progressing to Ansible Automation Platform. You'll write playbooks, use variables, create projects and job templates, work with surveys, configure role-based access control, and explore RHEL System Roles — all in 90 minutes.
+If you're new to Ansible Automation, this condensed workshop covers command-line fundamentals and applies what you've learned to implement Ansible automation controller in your enterprise use cases. You'll start off by writing your first Ansible playbook and using variables, then move to automation controller to understand projects, job templates, surveys, role-based access control, and system roles.
 
 After finishing this lab you are ready to start using Ansible for your automation requirements.
 
@@ -12,7 +12,9 @@ The exercises are self explanatory and guide the participants through the entire
 
 == Time Planning
 
-The exercises themselves should take roughly 75 minutes, plus approximately 15 minutes for the accompanying presentation.
+The time required to do the workshop strongly depends on multiple factors: the number of participants, how familiar those are with Linux in general and how much discussions are done in between.
+
+Having said that, the exercises themselves should take roughly 75 minutes. The accompanying presentation adds another 15 minutes.
 
 == Lab Diagram
 
