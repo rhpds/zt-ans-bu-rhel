@@ -1,20 +1,8 @@
 * xref:index.adoc[Workshop Overview]
-
-.Section 1: Command-line Ansible
-* xref:module-01.adoc[1.1 Writing Your First Playbook]
-* xref:module-02.adoc[1.2 Using Variables]
-* xref:module-03.adoc[1.3 Conditionals, Handlers and Loops]
-* xref:module-04.adoc[1.4 Templates]
-* xref:module-05.adoc[1.5 Collections]
-* xref:module-06.adoc[1.6 Ansible Navigator & Execution Environments]
-* xref:module-07.adoc[1.7 Debugging and Error Handling]
-
-.Section 2: Ansible Automation Platform
-* xref:module-08.adoc[2.1 Introduction to Automation Platform]
-* xref:module-09.adoc[2.2 Inventories and Credentials]
-* xref:module-10.adoc[2.3 Projects & Job Templates]
-* xref:module-11.adoc[2.4 Surveys]
-* xref:module-12.adoc[2.5 Role-based Access Control]
-* xref:module-13.adoc[2.6 Workflows]
-* xref:module-14.adoc[2.7 System Roles]
-* xref:module-15.adoc[2.8 Wrap up]
+* xref:module-01.adoc[1. Writing Your First Playbook]
+* xref:module-02.adoc[2. Using Variables]
+* xref:module-10.adoc[3. Projects & Job Templates]
+* xref:module-11.adoc[4. Surveys]
+* xref:module-12.adoc[5. Role-based Access Control]
+* xref:module-14.adoc[6. System Roles]
+* xref:module-15.adoc[7. Wrap Up]

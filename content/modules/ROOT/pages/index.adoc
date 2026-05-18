@@ -1,20 +1,20 @@
-= Ansible Workshop - Ansible for Red Hat Enterprise Linux
+= Ansible Workshop - Ansible for Red Hat Enterprise Linux (90 minutes)
 
 *This is documentation for Ansible Automation Platform 2.6*
 
-If you're new to Ansible Automation, this workshop consists of two parts: 1) starting with the basic fundamentals and 2) applying what you've learned to implement Ansible automation controller to your enterprise use cases. You'll start off by writing your first Ansible playbook, work on Jinja templates, and implement higher-level Ansible roles. Next you'll get started on automation controller, understand inventory and credential management, projects, job templates, surveys, workflows and more.
+If you're new to Ansible Automation, this condensed workshop covers command-line fundamentals and applies what you've learned to implement Ansible automation controller in your enterprise use cases. You'll start off by writing your first Ansible playbook and using variables, then move to automation controller to understand projects, job templates, surveys, role-based access control, and system roles.
 
 After finishing this lab you are ready to start using Ansible for your automation requirements.
 
 == Workshop Overview
 
-The exercises are self explanatory and guide the participants through the entire lab. All concepts are explained when they are introduced. All work is performed in the provided lab environment (no local installs). Early exercises use `ansible-playbook`; Ansible Navigator is introduced in Exercise 1.6 and is already available in the lab.
+The exercises are self explanatory and guide the participants through the entire lab. All concepts are explained when they are introduced. All work is performed in the provided lab environment (no local installs). Exercises use `ansible-playbook` to run playbooks from the command line.
 
 == Time Planning
 
-The time required to do the workshops strongly depends on multiple factors: the number of participants, how familiar those are with Linux in general and how much discussions are done in between.
+The time required to do the workshop strongly depends on multiple factors: the number of participants, how familiar those are with Linux in general and how much discussions are done in between.
 
-Having said that, the exercises themselves should take roughly 4-5 hours. The first section is slightly longer than the second one.
+Having said that, the exercises themselves should take roughly 75 minutes. The accompanying presentation adds another 15 minutes.
 
 == Lab Diagram
 
@@ -42,31 +42,15 @@ You'll work in a pre-configured environment with the following hosts:
 |node03
 |===
 
-== Section 1 - Command-line Ansible Exercises
+== Exercises
 
-[NOTE]
-====
-Early exercises (1.1–1.5) use `ansible-playbook` in the provided lab environment. Ansible Navigator is introduced in Exercise 1.6 and is already available in your lab environment (no local installation required).
-====
-
-* xref:module-01.adoc[Exercise 1.1 - Writing Your First Playbook]
-* xref:module-02.adoc[Exercise 1.2 - Using Variables]
-* xref:module-03.adoc[Exercise 1.3 - Conditionals, Handlers and Loops]
-* xref:module-04.adoc[Exercise 1.4 - Templates]
-* xref:module-05.adoc[Exercise 1.5 - Collections]
-* xref:module-06.adoc[Exercise 1.6 - Ansible Navigator and Execution Environments]
-* xref:module-07.adoc[Exercise 1.7 - Debugging and Error Handling]
-
-== Section 2 - Ansible Automation Platform Exercises
-
-* xref:module-08.adoc[Exercise 2.1 - Introduction to Ansible Automation Platform]
-* xref:module-09.adoc[Exercise 2.2 - Managing Inventories and Credentials]
-* xref:module-10.adoc[Exercise 2.3 - Projects & Job Templates]
-* xref:module-11.adoc[Exercise 2.4 - Surveys]
-* xref:module-12.adoc[Exercise 2.5 - Role-based Access Control]
-* xref:module-13.adoc[Exercise 2.6 - Workflows]
-* xref:module-14.adoc[Exercise 2.7 - System Roles]
-* xref:module-15.adoc[Exercise 2.8 - Wrap up]
+* xref:module-01.adoc[Exercise 1 - Writing Your First Playbook]
+* xref:module-02.adoc[Exercise 2 - Using Variables]
+* xref:module-10.adoc[Exercise 3 - Projects & Job Templates]
+* xref:module-11.adoc[Exercise 4 - Surveys]
+* xref:module-12.adoc[Exercise 5 - Role-based Access Control]
+* xref:module-14.adoc[Exercise 6 - System Roles]
+* xref:module-15.adoc[Exercise 7 - Wrap Up]
 
 '''
 
