@@ -241,7 +241,23 @@ echo "Configuring podman isolation for AAP containers..."
 # Wait for controller containers to be fully running
 sleep 10
 
-# Create podman config directory in writable /tmp location
+# Configure podman wrapper on host to set XDG_CONFIG_HOME
+# AAP mounts /home/rhel/aap/containers/podman -> /usr/bin/podman in containers
+if [ -f /home/rhel/aap/containers/podman ]; then
+  # Backup original wrapper
+  cp -n /home/rhel/aap/containers/podman /home/rhel/aap/containers/podman.bak || true
+
+  # Create wrapper that sets XDG_CONFIG_HOME before calling podman-remote
+  cat > /home/rhel/aap/containers/podman << 'PODMANWRAPPER'
+#!/bin/bash
+# AAP podman wrapper - ensures podman-remote can find config
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-/tmp/.config}"
+exec /usr/bin/podman-remote "$@"
+PODMANWRAPPER
+  chmod +x /home/rhel/aap/containers/podman
+fi
+
+# Create podman config in /tmp/.config inside controller containers
 for container in automation-controller-task automation-controller-web; do
   if podman exec $container test -d /tmp 2>/dev/null; then
     podman exec $container bash -c "
@@ -256,14 +272,6 @@ PODMANCONF
     " || echo "Warning: Could not configure podman in $container"
   fi
 done
-
-# Update controller-task supervisord to set XDG_CONFIG_HOME
-podman exec automation-controller-task bash -c "
-  if ! grep -q 'XDG_CONFIG_HOME' /etc/supervisord_task.conf; then
-    sed -i '/^environment = /s/$/,XDG_CONFIG_HOME=\"\/tmp\/.config\"/' /etc/supervisord_task.conf && \
-    supervisorctl reload
-  fi
-" || echo "Warning: Could not update supervisord environment"
 
 echo "Podman isolation configuration completed"
 
