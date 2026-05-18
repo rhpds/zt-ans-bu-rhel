@@ -236,6 +236,45 @@ EOFAAP
 
 ANSIBLE_COLLECTIONS_PATH="/root/ansible-automation-platform-containerized-setup/collections/:/root/.ansible/collections/" ansible-playbook /tmp/aap-setup.yml
 
+echo "Configuring podman isolation for AAP containers..."
+
+# Wait for controller containers to be fully running
+sleep 10
+
+# Configure podman wrapper on host to set XDG_CONFIG_HOME
+# AAP mounts /home/rhel/aap/containers/podman -> /usr/bin/podman in containers
+if [ -f /home/rhel/aap/containers/podman ]; then
+  # Backup original wrapper
+  cp -n /home/rhel/aap/containers/podman /home/rhel/aap/containers/podman.bak || true
+
+  # Create wrapper that sets XDG_CONFIG_HOME before calling podman-remote
+  cat > /home/rhel/aap/containers/podman << 'PODMANWRAPPER'
+#!/bin/bash
+# AAP podman wrapper - ensures podman-remote can find config
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-/tmp/.config}"
+exec /usr/bin/podman-remote "$@"
+PODMANWRAPPER
+  chmod +x /home/rhel/aap/containers/podman
+fi
+
+# Create podman config in /tmp/.config inside controller containers
+for container in automation-controller-task automation-controller-web; do
+  if podman exec $container test -d /tmp 2>/dev/null; then
+    podman exec $container bash -c "
+      mkdir -p /tmp/.config/containers && \
+      cat > /tmp/.config/containers/containers.conf << 'PODMANCONF'
+[engine]
+runtime = \"crun\"
+
+[containers]
+pids_limit = 404734
+PODMANCONF
+    " || echo "Warning: Could not configure podman in $container"
+  fi
+done
+
+echo "Podman isolation configuration completed"
+
 # Set proper ownership
 chown -R rhel:rhel /home/rhel
 
