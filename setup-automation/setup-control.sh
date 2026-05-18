@@ -236,6 +236,37 @@ EOFAAP
 
 ANSIBLE_COLLECTIONS_PATH="/root/ansible-automation-platform-containerized-setup/collections/:/root/.ansible/collections/" ansible-playbook /tmp/aap-setup.yml
 
+echo "Configuring podman isolation for AAP containers..."
+
+# Wait for controller containers to be fully running
+sleep 10
+
+# Create podman config directory in writable /tmp location
+for container in automation-controller-task automation-controller-web; do
+  if podman exec $container test -d /tmp 2>/dev/null; then
+    podman exec $container bash -c "
+      mkdir -p /tmp/.config/containers && \
+      cat > /tmp/.config/containers/containers.conf << 'PODMANCONF'
+[engine]
+runtime = \"crun\"
+
+[containers]
+pids_limit = 404734
+PODMANCONF
+    " || echo "Warning: Could not configure podman in $container"
+  fi
+done
+
+# Update controller-task supervisord to set XDG_CONFIG_HOME
+podman exec automation-controller-task bash -c "
+  if ! grep -q 'XDG_CONFIG_HOME' /etc/supervisord_task.conf; then
+    sed -i '/^environment = /s/$/,XDG_CONFIG_HOME=\"\/tmp\/.config\"/' /etc/supervisord_task.conf && \
+    supervisorctl reload
+  fi
+" || echo "Warning: Could not update supervisord environment"
+
+echo "Podman isolation configuration completed"
+
 # Set proper ownership
 chown -R rhel:rhel /home/rhel
 
