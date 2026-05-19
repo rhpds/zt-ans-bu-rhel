@@ -1,8 +1,10 @@
----
 virtualmachines:
   # Ansible Automation Platform Control Node
   - name: "control"
-    image: "aap-2.6-2-ceh-20251103"
+last month
+
+Update image version for control virtual machine
+    image: "aap-2.6-6-ceh-20260325"
     memory: "32G"
     cores: 4
     image_size: "50Gi"
@@ -39,40 +41,39 @@ virtualmachines:
         tls_termination: reencrypt
         tls_destinationCACertificate: |
           -----BEGIN CERTIFICATE-----
-          MIIF1jCCA76gAwIBAgIUASi34Lss1upPyAS1YsA8eZTJOFAwDQYJKoZIhvcNAQEL
+          MIIF1jCCA76gAwIBAgIUPzdhO8K7sZDzrzsDeMjWgckRBAowDQYJKoZIhvcNAQEL
           BQAwgYIxCzAJBgNVBAYTAlVTMRcwFQYDVQQIDA5Ob3J0aCBDYXJvbGluYTEQMA4G
           A1UEBwwHUmFsZWlnaDEQMA4GA1UECgwHUmVkIEhhdDEQMA4GA1UECwwHQW5zaWJs
-          ZTEkMCIGA1UEAwwbQW5zaWJsZSBBdXRvbWF0aW9uIFBsYXRmb3JtMB4XDTI1MTEw
-          MzE5NDkyNVoXDTM1MTEwMTE5NDkyNVowgYIxCzAJBgNVBAYTAlVTMRcwFQYDVQQI
+          ZTEkMCIGA1UEAwwbQW5zaWJsZSBBdXRvbWF0aW9uIFBsYXRmb3JtMB4XDTI1MTAx
+          ODEzMDUyMVoXDTM1MTAxNjEzMDUyMVowgYIxCzAJBgNVBAYTAlVTMRcwFQYDVQQI
           DA5Ob3J0aCBDYXJvbGluYTEQMA4GA1UEBwwHUmFsZWlnaDEQMA4GA1UECgwHUmVk
           IEhhdDEQMA4GA1UECwwHQW5zaWJsZTEkMCIGA1UEAwwbQW5zaWJsZSBBdXRvbWF0
-          aW9uIFBsYXRmb3JtMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAqNju
-          44XrKsBPTqv5J+OqRz3RsY1QIemHw3NIJF3d3UvimBHt42rHnwt4Lww3mYtYMJQ0
-          nzcRpr+EnFlC5YFl2Htrfq6NzUUqknTpaCeSKNCli4aKYe9JYSocWy/8ag+H7gMf
-          oUFJ7+PDh/S8HcP7ZA15RRXhyGdjzpUK9+ry/UcMcLE4ZOW2Z4YvFyjemh+c/yYY
-          KHsNjV56TRL5q4VqsxlKQuqNQos9lWoHjz363JxC9UrvTPqvl/UbHsQmTD8NKDnB
-          xxsaYTl41kVqscLSw5KR2c6CVVgSjIn5o0iAo01Sd4gONZ0ImhrzQ5Ea9Ya2kKG7
-          OCdg84V4hVmy/fnrcBC4k9RgNthWH9k4eMHwZf3B2P1xZds3dkV1k6yF3zSrQfJd
-          VJZ0AsaeGQGw26NQw0IG17P/jmho1jBhqSLaJyT9vVM/JMOjdojbD/dSFkccID1E
-          wUZeklYiLScD13rhckVk8MxrsFv99BO91tm07lwnj5jsyLoTvUOLuI4o7yw1AlsC
-          V/OjdpAohWbL0W6YxS/elBVgZhe7Gv2lnIF9L7TxTj/UQWaarouAIgyevqbP5dnt
-          mRccxZ38YGivRA+PgWwwSL9AQCFzIJW1Q45shUR2vkTsiWEEB+Lobkj5dcyLG0CH
-          Z7fnJnlKdNDcMbm2s6U1i+nHvv1dpfyveRvOiCsCAwEAAaNCMEAwDgYDVR0PAQH/
-          BAQDAgIEMA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYEFHAFWQy/8in8Lg2TaG9g
-          NJyRxdMfMA0GCSqGSIb3DQEBCwUAA4ICAQBT5QI+nxhpEwPVp/BxZnxJWFBotHw3
-          rROgu1GBR3clZ+c+YFygAUs3LSpCLuDGnqJnh0822sIM+5FFP2ypqHdzeKo3TQEj
-          K4QiTBGeiSgqKqwHQdqPKywgFqAuxFC+clVrmFVR7dQJ8OiUZYNk5fwYLxnOftFQ
-          pxgpJyAX7vpZKnzujc5IGEqb3apjyxUuX3TFRq4uJp8ffWR9cgykeI8WFqAi33+K
-          RW8h9UQbS9mPjkJ3lbTtd06Jx2M0V2pwtQBMlp7aTboEqs+CB5moCIq1wTXvZBqB
-          dcqcpRGppYHL+QuUguBIlZcxn/8JpfoEsYVOJszp4YLEKzr68RoXvevObbrjJxfq
-          BnEPFKqt+pQpjEJktn8JDqp8G6gMc9n+Nkx88f3MR8yr2nhMl9YL6jSZLklH4JJV
-          2UjYg+KU/u/JttFmDydmys1xN9hiFM2wtRjp+r8gAQw95pyUhMraA01qLYWP5wAO
-          KsMpndKg6rUIycxNNr+eLGNafbUNsp9qayRSull5jKok43Goi8oF8edRlPY4qpZW
-          6WvY8+YjBLTCY1rQBb6/Rfr5PHSaRlGLi3Os6xG84gt69dLtMZBz4O232fc5sG5M
-          wMQ+MKwOpgDyuy79XKvsPanlAfP8WgJi79pJdHu3BGTLlDFil9CK8l2sncM1FdaE
-          57Ys1npOUx+oxw==
+          aW9uIFBsYXRmb3JtMIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAlGsn
+          NRp5fWG/8zOPcKAH9vzWSCeSfmtSjI6NtQ8TIwCBuLyP0cO7NCcLNZfJc6VbHpPE
+          D+IVu1ARbvB9X6A33HL8eZy7W8QIhiy/xXhSVYksyvgW01E3jUICWDnru9ib2rCy
+          sSiTEw16l0XaTLdBFx/irLy5v9qnKn/Vp+N/fbr13UXEyMGbgkJ+H95CmGPA5xKo
+          ikRt4/GgPcq6N59DyulkBCzLPQztFPb/MneEwgYQP56Xq0mmEgGguHSnPjMaLFAo
+          ee+OyIeCbM/vorc8BaE8CxVlM9Ks/WTRJZKpsIiR3HHgrd72qoEMd+LYqkCMQ+B4
+          8lPpChn49jky74rYBJ0+DdiZy52YB0FBUHgtDiJupvRic1NfCE2xMxKmkeiczaX4
+          BhDtl2WgWXurpv6tMKvJjQbBNtwXuV3eRrfbznDMH+dAKbQu0gT3hhdXJMKhfVQB
+          e8st+XTTPW+GbQ7HxcP5/Tgz3xO//bnyaqeYk/SZVqkRFGP30+Utpz9JSAMkOYUJ
+          CTF1t/IIM0vPjvOOsUk4sIaI34ZMeZ4eIz+T3gbOQz+J06a8xRmU9tR5urlh48Wp
+          dVHFlX6KjzySTdxLimaA/nNtuHq4fhD/qRTny0fTaJI0IbTEf2bdxHZ6wn3Be+at
+          XMBSSEFxCzl/hFS61aXRiKDk8kLRFzBg30Dot3sCAwEAAaNCMEAwDgYDVR0PAQH/
+          BAQDAgIEMA8GA1UdEwEB/wQFMAMBAf8wHQYDVR0OBBYEFCoUqoKpNH1OY8jz0JZq
+          CgCom8xIMA0GCSqGSIb3DQEBCwUAA4ICAQAC2fxSDzlAKoKAHE4TGeE/fdbBBpB7
+          f4EezkTKcUDoor3j3IfggD6e6hNLzsn7WlTX0DwVjHGtk8jlp3+TxnM/0fy7kK32
+          0L2iT/2gw9zU9mdSBHGlh4Sap5HQsUsfMhrjAcDCOHeCDy5TTLD8VsL7GcRfivrm
+          Lp8lulnU3M2rqj3hM8x2MBknUFyLkgntb1CTxjaLpTFrcjqoZEPg5lPUZTH0tQMd
+          mpQwFEfwMV9tUcjbT3jT2cBb0NWU7jrvO0w9rblIBtTaxewuOLIBLSbieVAB8vxJ
+          NnI235iMorhKBgWy0yXMMTnLdcvEyX7E+LsZEev9jUzKhudfgucpD4E+WFMlTFK4
+          BxrsHsSoq6bNG85+qyvwOccH7u5RGtJUpm6zAeANsCJqkp9ooELXyXaCzRjggjkj
+          fVxa/w/VF6XO6bQD4c5cZ1qjqxcG+IAXV0L0//Ed5Zgq4onXnXDWQ2fra10Ddgoy
+          RyR047qkptwpSC56+0XzmgoXopLti/ArzbpjQmH46fXsKI2QCCfuP8wi3UGaKpjB
+          5qIQHkEke5sou6ebEbfM87p5g4PEqpZHMHyqGAZhimIwMF5kP9TY/5JIHwLYAtIW
+          nF1h8LkYSMKndQyUXY1O5p31b48Qhy9ibaRSQWDD7itU9b3nId/YvISGk6hvT2Cl
+          rzK/kxNUzWubVA==
           -----END CERTIFICATE-----
-
   - name: "node01"
     image: "rhel-9.5"
     memory: "2G"
@@ -91,7 +92,6 @@ virtualmachines:
       runcmd:
         - echo "PasswordAuthentication yes" > /etc/ssh/sshd_config.d/50-cloud-init.conf
         - systemctl reload sshd
-
   - name: "node02"
     image: "rhel-9.5"
     memory: "2G"
@@ -139,57 +139,3 @@ virtualmachines:
       - name: node03-http
         ports:
           - port: 80
-            protocol: TCP
-            targetPort: 80
-            name: node03
-    routes:
-      - name: node03-web
-        host: node03
-        service: node03-http
-        targetPort: 80
-        tls: true
-        tls_termination: Edge
-    userdata: |-
-      #cloud-config
-      user: rhel
-      password: ansible123!
-      chpasswd: { expire: False }
-      runcmd:
-        - echo "PasswordAuthentication yes" > /etc/ssh/sshd_config.d/50-cloud-init.conf
-        - systemctl reload sshd
-
-
-  - name: "vscode"
-    image: "devtools-ansible"
-    memory: "8G"
-    cores: 2
-    image_size: "20Gi"
-    disk_type: "scsi"
-    bootloader: "efi"
-    tags:
-      - key: "AnsibleGroup"
-        value: "isolated"
-    networks:
-      - default
-    services:
-      - name: vscode-8080
-        ports:
-          - port: 8080
-            protocol: TCP
-            targetPort: 8080
-            name: vscode
-    routes:
-      - name: vscode-8080
-        host: vscode
-        service: vscode-8080
-        targetPort: 8080
-        tls: true
-        tls_termination: Edge
-    userdata: |-
-      #cloud-config
-      user: rhel
-      password: ansible123!
-      chpasswd: { expire: False }
-      runcmd:
-        - echo "PasswordAuthentication yes" > /etc/ssh/sshd_config.d/50-cloud-init.conf
-        - systemctl reload sshd
