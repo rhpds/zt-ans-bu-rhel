@@ -1,3 +1,4 @@
+---
 virtualmachines:
   # Ansible Automation Platform Control Node
   - name: "control"
@@ -71,6 +72,7 @@ virtualmachines:
           wMQ+MKwOpgDyuy79XKvsPanlAfP8WgJi79pJdHu3BGTLlDFil9CK8l2sncM1FdaE
           57Ys1npOUx+oxw==
           -----END CERTIFICATE-----
+
   - name: "node01"
     image: "rhel-9.5"
     memory: "2G"
@@ -89,6 +91,7 @@ virtualmachines:
       runcmd:
         - echo "PasswordAuthentication yes" > /etc/ssh/sshd_config.d/50-cloud-init.conf
         - systemctl reload sshd
+
   - name: "node02"
     image: "rhel-9.5"
     memory: "2G"
@@ -136,3 +139,57 @@ virtualmachines:
       - name: node03-http
         ports:
           - port: 80
+            protocol: TCP
+            targetPort: 80
+            name: node03
+    routes:
+      - name: node03-web
+        host: node03
+        service: node03-http
+        targetPort: 80
+        tls: true
+        tls_termination: Edge
+    userdata: |-
+      #cloud-config
+      user: rhel
+      password: ansible123!
+      chpasswd: { expire: False }
+      runcmd:
+        - echo "PasswordAuthentication yes" > /etc/ssh/sshd_config.d/50-cloud-init.conf
+        - systemctl reload sshd
+
+
+  - name: "vscode"
+    image: "devtools-ansible"
+    memory: "8G"
+    cores: 2
+    image_size: "20Gi"
+    disk_type: "scsi"
+    bootloader: "efi"
+    tags:
+      - key: "AnsibleGroup"
+        value: "isolated"
+    networks:
+      - default
+    services:
+      - name: vscode-8080
+        ports:
+          - port: 8080
+            protocol: TCP
+            targetPort: 8080
+            name: vscode
+    routes:
+      - name: vscode-8080
+        host: vscode
+        service: vscode-8080
+        targetPort: 8080
+        tls: true
+        tls_termination: Edge
+    userdata: |-
+      #cloud-config
+      user: rhel
+      password: ansible123!
+      chpasswd: { expire: False }
+      runcmd:
+        - echo "PasswordAuthentication yes" > /etc/ssh/sshd_config.d/50-cloud-init.conf
+        - systemctl reload sshd
