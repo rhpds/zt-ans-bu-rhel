@@ -1,9 +1,6 @@
 virtualmachines:
   # Ansible Automation Platform Control Node
   - name: "control"
-last month
-
-Update image version for control virtual machine
     image: "aap-2.6-6-ceh-20260325"
     memory: "32G"
     cores: 4
