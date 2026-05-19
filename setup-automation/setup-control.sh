@@ -191,7 +191,4 @@ EOFAAP
 
 ANSIBLE_COLLECTIONS_PATH="/root/ansible-automation-platform-containerized-setup/collections/:/root/.ansible/collections/" ansible-playbook /tmp/aap-setup.yml
 
-# Set proper ownership
-chown -R rhel:rhel /home/rhel
-
 echo "Control node setup completed successfully!"
