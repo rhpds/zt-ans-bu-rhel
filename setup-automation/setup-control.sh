@@ -46,7 +46,7 @@ fi
 echo "Enabling RHEL 9 satellite repos..."
 subscription-manager repos --enable=rhel-9-for-x86_64-baseos-rpms --enable=rhel-9-for-x86_64-appstream-rpms
 
-retry "dnf install -y python3-pip python3-libsemanage sshpass"
+retry "dnf install -y python3-pip sshpass"
 
 # Disable systemd-tmpfiles-setup to avoid conflicts
 systemctl stop systemd-tmpfiles-setup.service 2>/dev/null || true
