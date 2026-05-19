@@ -3,51 +3,6 @@
 # Ansible for RHEL Workshop - Control Node Setup Script
 # This script configures the control node for the workshop
 
-retry() {
-    for i in {1..3}; do
-        echo "Attempt $i: $2"
-        if $1; then
-            return 0
-        fi
-        [ $i -lt 3 ] && sleep 5
-    done
-    echo "Failed after 3 attempts: $2"
-    exit 1
-}
-
-# AWS images set manage_repos=0 since they use RHUI instead of RHSM for repos.
-# Re-enable it so satellite registration creates proper repo files.
-echo "Enabling RHSM repo management..."
-sed -i 's/^manage_repos.*=.*0/manage_repos = 1/' /etc/rhsm/rhsm.conf
-
-retry "subscription-manager clean"
-retry "curl -k -L https://${SATELLITE_URL}/pub/katello-server-ca.crt -o /etc/pki/ca-trust/source/anchors/${SATELLITE_URL}.ca.crt"
-retry "update-ca-trust"
-KATELLO_INSTALLED=$(rpm -qa | grep -c katello)
-if [ $KATELLO_INSTALLED -eq 0 ]; then
-  retry "rpm -Uhv https://${SATELLITE_URL}/pub/katello-ca-consumer-latest.noarch.rpm"
-fi
-subscription-manager status
-if [ $? -ne 0 ]; then
-    retry "subscription-manager register --org=${SATELLITE_ORG} --activationkey=${SATELLITE_ACTIVATIONKEY}"
-fi
-
-# Disable AWS RHUI repos - the AAP 2.6 image was built on AWS and has RHUI repos
-# that cannot resolve in OpenShift CNV (rhui.REGION.aws.ce.redhat.com)
-echo "Disabling AWS RHUI repos..."
-dnf config-manager --set-disabled '*rhui*' 2>/dev/null || true
-
-# Disable Amazon ID dnf plugin that errors in non-AWS environments
-if [ -f /etc/dnf/plugins/amazon-id.conf ]; then
-    sed -i 's/enabled.*=.*1/enabled=0/' /etc/dnf/plugins/amazon-id.conf
-fi
-
-# Enable RHEL 9 repos from satellite (activation key may not auto-enable them)
-echo "Enabling RHEL 9 satellite repos..."
-subscription-manager repos --enable=rhel-9-for-x86_64-baseos-rpms --enable=rhel-9-for-x86_64-appstream-rpms
-
-retry "dnf install -y python3-pip python3-libsemanage sshpass"
-
 # Disable systemd-tmpfiles-setup to avoid conflicts
 systemctl stop systemd-tmpfiles-setup.service 2>/dev/null || true
 systemctl disable systemd-tmpfiles-setup.service 2>/dev/null || true
@@ -235,8 +190,5 @@ cat > /tmp/aap-setup.yml << 'EOFAAP'
 EOFAAP
 
 ANSIBLE_COLLECTIONS_PATH="/root/ansible-automation-platform-containerized-setup/collections/:/root/.ansible/collections/" ansible-playbook /tmp/aap-setup.yml
-
-# Set proper ownership
-chown -R rhel:rhel /home/rhel
 
 echo "Control node setup completed successfully!"

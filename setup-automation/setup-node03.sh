@@ -1,9 +1,21 @@
 #!/bin/bash
+# AWS images set manage_repos=0 since they use RHUI instead of RHSM for repos.
+sed -i 's/^manage_repos.*=.*0/manage_repos = 1/' /etc/rhsm/rhsm.conf
+
+# Clear any stale Satellite registration before re-registering
+subscription-manager clean || true
+sleep 2
+
 curl -k -L https://${SATELLITE_URL}/pub/katello-server-ca.crt -o /etc/pki/ca-trust/source/anchors/${SATELLITE_URL}.ca.crt
 update-ca-trust
-rpm -Uhv https://${SATELLITE_URL}/pub/katello-ca-consumer-latest.noarch.rpm
-
-subscription-manager register --org=${SATELLITE_ORG} --activationkey=${SATELLITE_ACTIVATIONKEY}
+KATELLO_INSTALLED=$(rpm -qa | grep -c katello)
+if [ $KATELLO_INSTALLED -eq 0 ]; then
+  rpm -Uhv https://${SATELLITE_URL}/pub/katello-ca-consumer-latest.noarch.rpm || true
+fi
+subscription-manager status
+if [ $? -ne 0 ]; then
+    subscription-manager register --org=${SATELLITE_ORG} --activationkey=${SATELLITE_ACTIVATIONKEY}
+fi
 
 # Ensure rhel user has password and sudo
 echo "rhel:ansible123!" | chpasswd
