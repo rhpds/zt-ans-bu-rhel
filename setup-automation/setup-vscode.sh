@@ -1,12 +1,26 @@
 #!/bin/bash
 cd /tmp
 
-curl -k  -L https://${SATELLITE_URL}/pub/katello-server-ca.crt -o /etc/pki/ca-trust/source/anchors/${SATELLITE_URL}.ca.crt
-update-ca-trust
-rpm -Uhv https://${SATELLITE_URL}/pub/katello-ca-consumer-latest.noarch.rpm || true
+# AWS images set manage_repos=0 since they use RHUI instead of RHSM for repos.
+# Re-enable it so satellite registration creates proper repo files.
+echo "Enabling RHSM repo management..."
+sed -i 's/^manage_repos.*=.*0/manage_repos = 1/' /etc/rhsm/rhsm.conf
 
-subscription-manager status >/dev/null 2>&1 || \
-  subscription-manager register --org=${SATELLITE_ORG} --activationkey=${SATELLITE_ACTIVATIONKEY} --force
+# Clear any stale Satellite registration before re-registering
+echo "Cleaning previous subscription-manager state..."
+subscription-manager clean || true
+sleep 2
+
+curl -k -L https://${SATELLITE_URL}/pub/katello-server-ca.crt -o /etc/pki/ca-trust/source/anchors/${SATELLITE_URL}.ca.crt
+update-ca-trust
+KATELLO_INSTALLED=$(rpm -qa | grep -c katello)
+if [ $KATELLO_INSTALLED -eq 0 ]; then
+  rpm -Uhv https://${SATELLITE_URL}/pub/katello-ca-consumer-latest.noarch.rpm || true
+fi
+subscription-manager status
+if [ $? -ne 0 ]; then
+    subscription-manager register --org=${SATELLITE_ORG} --activationkey=${SATELLITE_ACTIVATIONKEY}
+fi
 setenforce 0
 
 # ─── Ensure rhel user has sudo and password ───
@@ -62,10 +76,6 @@ cat > /home/rhel/.local/share/code-server/User/settings.json << 'SETTINGS'
 SETTINGS
 
 systemctl start code-server || true
-
-# ─── Repo configuration ───
-# Re-enable RHSM repo management (AWS images set manage_repos=0)
-sed -i 's/^manage_repos.*=.*0/manage_repos = 1/' /etc/rhsm/rhsm.conf
 
 # Disable unreachable AWS RHUI repos
 dnf config-manager --set-disabled '*rhui*' 2>/dev/null || true
